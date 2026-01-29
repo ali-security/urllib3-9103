@@ -1,3 +1,4 @@
+setuptools<65
 mock==3.0.5
 coverage~=5.0;python_version<="2.7"
 coverage~=6.0;python_version>="3.6"

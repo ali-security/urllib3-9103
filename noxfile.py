@@ -16,8 +16,8 @@ SOURCE_FILES = [
 
 def tests_impl(session, extras="socks,secure,brotli"):
     # Install deps and the package itself.
-    session.install("-r", "dev-requirements.txt")
     session.install(".[{extras}]".format(extras=extras))
+    session.install("-r", "dev-requirements.txt")
 
     # Show the pip version.
     session.run("pip", "--version")
@@ -47,7 +47,12 @@ def tests_impl(session, extras="socks,secure,brotli"):
 
 @nox.session(python=["2.7", "3.6", "3.7", "3.8", "3.9", "3.10", "3.11", "pypy"])
 def test(session):
-    tests_impl(session)
+    extras = "socks,secure"
+    if session.python == "2.7":
+        session.install("brotli==1.0.9")
+    else:
+        extras += ",brotli"
+    tests_impl(session, extras=extras)
 
 
 @nox.session(python=["2.7", "3"])
@@ -55,7 +60,7 @@ def google_brotli(session):
     # https://pypi.org/project/Brotli/ is the Google version of brotli, so
     # install it separately and don't install our brotli extra (which installs
     # brotlipy).
-    session.install("brotli")
+    session.install("brotli==1.0.9")
     tests_impl(session, extras="socks,secure")
 
 
