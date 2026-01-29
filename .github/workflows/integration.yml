@@ -3,26 +3,26 @@ name: Downstream
 on:
   pull_request:
     paths:
-      - "src/urllib3/_version.py"
+      - src/urllib3/_version.py
 
-permissions: "read-all"
+permissions: read-all
 
 jobs:
   integration:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.10"]
+        python-version: ['3.10']
         downstream: [botocore, requests]
 
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
       - name: Set Up Python - ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: MatteoH2O1999/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
 
